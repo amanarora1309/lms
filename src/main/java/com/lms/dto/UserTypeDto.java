@@ -14,7 +14,6 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 public class UserTypeDto {
     private Long id;
     private String name;

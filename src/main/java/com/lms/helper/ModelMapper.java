@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class modelMapper {
-    public static UserTypeDto toDto(UserType userType) {
+public class ModelMapper {
+    public static UserTypeDto userTypeEntityToDto(UserType userType) {
         if (userType == null) {
             return null;
         }
@@ -19,15 +19,11 @@ public class modelMapper {
         dto.setId(userType.getId());
         dto.setName(userType.getName());
         dto.setPermissions(parsePermissions(userType.getPermissions()));
-        dto.setEntryBy(userType.getEntryBy());
-        dto.setEntryAt(userType.getEntryAt());
-        dto.setUpdatedBy(userType.getUpdatedBy());
-        dto.setUpdatedAt(userType.getUpdatedAt());
 
         return dto;
     }
 
-    private static List<String> parsePermissions(String permissions) {
+    public static List<String> parsePermissions(String permissions) {
         if (permissions == null || permissions.isEmpty()) {
             return new ArrayList<>();
         }
@@ -35,7 +31,7 @@ public class modelMapper {
     }
 
 
-    public static UserType toEntity(UserTypeDto dto) {
+    public static UserType userTypeDtoToEntity(UserTypeDto dto) {
         if (dto == null) {
             return null;
         }
@@ -44,15 +40,11 @@ public class modelMapper {
         userType.setId(dto.getId());
         userType.setName(dto.getName());
         userType.setPermissions(formatPermissions(dto.getPermissions()));
-        userType.setEntryBy(dto.getEntryBy());
-        userType.setEntryAt(dto.getEntryAt());
-        userType.setUpdatedBy(dto.getUpdatedBy());
-        userType.setUpdatedAt(dto.getUpdatedAt());
 
         return userType;
     }
 
-    private static String formatPermissions(List<String> permissions) {
+    public static String formatPermissions(List<String> permissions) {
         if (permissions == null || permissions.isEmpty()) {
             return "";
         }
@@ -60,7 +52,7 @@ public class modelMapper {
     }
 
 
-    public static UserDto toDto(User user) {
+    public static UserDto UserEntityToDto(User user) {
         if (user == null) {
             return null;
         }
@@ -71,16 +63,13 @@ public class modelMapper {
         dto.setEmail(user.getEmail());
         dto.setMobile(user.getMobile());
         dto.setPassword(user.getPassword());
-        dto.setEntryBy(user.getEntryBy());
-        dto.setEntryAt(user.getEntryAt());
-        dto.setUpdatedBy(user.getUpdatedBy());
-        dto.setUpdatedAt(user.getUpdatedAt());
+        dto.setUserTypeDto(userTypeEntityToDto(user.getUserType()));
 
         return dto;
     }
 
 
-    public static User toEntity(UserDto dto) {
+    public static User UserDtoToEntity(UserDto dto) {
         if (dto == null) {
             return null;
         }
@@ -91,11 +80,7 @@ public class modelMapper {
         user.setEmail(dto.getEmail());
         user.setMobile(dto.getMobile());
         user.setPassword(dto.getPassword());
-        user.setEntryBy(dto.getEntryBy());
-        user.setEntryAt(dto.getEntryAt());
-        user.setUpdatedBy(dto.getUpdatedBy());
-        user.setUpdatedAt(dto.getUpdatedAt());
-
+        user.setUserType(userTypeDtoToEntity(dto.getUserTypeDto()));
         return user;
     }
 }

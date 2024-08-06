@@ -1,5 +1,6 @@
 package com.lms.response;
 
+import com.lms.dto.UserDto;
 import com.lms.entitiy.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,5 +16,5 @@ import java.util.List;
 public class UserResponse {
     private boolean success;
     private String message;
-    private List<User> result;
+    private List<UserDto> result;
 }

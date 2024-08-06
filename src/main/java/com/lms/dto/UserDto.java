@@ -18,7 +18,7 @@ public class UserDto {
     private String email;
     private String mobile;
     private String password;
-
+    private UserTypeDto userTypeDto;
     private String entryBy;
     private Date entryAt;
     private String updatedBy;

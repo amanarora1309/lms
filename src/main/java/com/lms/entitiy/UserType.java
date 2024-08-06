@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -23,7 +24,7 @@ public class UserType {
     @OneToMany(mappedBy = "userType")
     private List<User> users;
     private String entryBy;
-    private String entryAt;
+    private Date entryAt;
     private String updatedBy;
-    private String updatedAt;
+    private Date updatedAt;
 }
