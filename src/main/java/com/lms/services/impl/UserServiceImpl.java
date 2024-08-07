@@ -4,9 +4,18 @@ import com.lms.dto.UserDto;
 import com.lms.entitiy.User;
 import com.lms.helper.ModelMapper;
 import com.lms.repositories.UserRepo;
+import com.lms.response.LoginResponse;
 import com.lms.response.UserResponse;
+import com.lms.services.JwtService;
 import com.lms.services.UserService;
 import org.springframework.dao.DataAccessException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,10 +30,17 @@ public class UserServiceImpl implements UserService {
 
 
     private UserRepo userRepo;
+    private PasswordEncoder passwordEncoder;
+    private AuthenticationManager authenticationManager;
+    private JwtService jwtService;
 
-    public UserServiceImpl(UserRepo userRepo) {
+    public UserServiceImpl(UserRepo userRepo, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtService jwtService) {
         this.userRepo = userRepo;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
     }
+
 
     @Override
     public UserResponse createUser(UserDto userDto) {
@@ -45,7 +61,7 @@ public class UserServiceImpl implements UserService {
                 res.setMessage("A user with this mobile number already exists.");
                 return res;
             }
-
+            userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
             // Convert UserDto to User entity
             User user = ModelMapper.UserDtoToEntity(userDto);
             user.setEntryAt(new Date());
@@ -211,4 +227,38 @@ public class UserServiceImpl implements UserService {
 
         return res;
     }
+
+    @Override
+    public LoginResponse login(UserDto userDto) {
+        Optional<User> user = this.userRepo.findByEmail(userDto.getEmail());
+        if(user.isEmpty()){
+            LoginResponse res = new LoginResponse();
+            res.setSuccess(false);
+            res.setMessage("User Not Found With This Email");
+            return res;
+        }
+
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            userDto.getEmail(),
+                            userDto.getPassword()
+                    )
+            );
+
+            // Assuming the user is found, generate token
+            String token = jwtService.generateToken(user); // make sure to pass the correct User object
+            return new LoginResponse(true, "Login Successfully", token);
+
+        } catch (AuthenticationException e) {
+            // This block will catch authentication exceptions, i.e., wrong password
+            LoginResponse res = new LoginResponse();
+            res.setSuccess(false);
+            res.setMessage("Invalid Username and Password");
+            return res;
+        }
+
+
+    }
+
 }

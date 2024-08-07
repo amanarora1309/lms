@@ -63,6 +63,7 @@ public class UserTypeServiceImpl implements UserTypeService {
 
     }
 
+
     @Override
     public UserTypeResponse updateUserType(UserTypeDto userTypeDto) {
         UserTypeResponse res = new UserTypeResponse();
@@ -199,4 +200,6 @@ public class UserTypeServiceImpl implements UserTypeService {
 
         return res;
     }
+
+
 }
