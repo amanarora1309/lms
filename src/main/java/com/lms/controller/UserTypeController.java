@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/")
-public class userTypeController {
+public class UserTypeController {
     private UserTypeService userTypeService;
 
-    public userTypeController(UserTypeService userTypeService) {
+    public UserTypeController(UserTypeService userTypeService) {
         this.userTypeService = userTypeService;
     }
 

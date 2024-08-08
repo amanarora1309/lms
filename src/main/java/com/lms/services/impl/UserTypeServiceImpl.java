@@ -10,6 +10,7 @@ import com.lms.response.UserResponse;
 import com.lms.response.UserTypeResponse;
 import com.lms.services.UserTypeService;
 import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,6 +18,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
+@Service
 public class UserTypeServiceImpl implements UserTypeService {
 
     private UserTypeRepo userTypeRepo;
